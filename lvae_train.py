@@ -12,7 +12,10 @@ import argparse
 from tqdm import tqdmfrom __future__ import division
 
 import os
-
+def str2bool(v):
+    return v.lower() in ('true', '1')
+parser.add_argument("--gpu_id", type=str,
+                        help="which gpu will be used", default=0)
 parser = argparse.ArgumentParser(description='PyTorch OSR Example')
 parser.add_argument('--dataset', default='mnist', help='cifar10|cifar100')
 parser.add_argument('--split', default='split1', help='split0, split1, ...')
@@ -36,6 +39,7 @@ args = parser.parse_args()
 
 # seed
 args.cuda = torch.cuda.is_available()
+os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
 torch.manual_seed(args.seed)
 if args.cuda:
     torch.cuda.manual_seed(args.seed)
